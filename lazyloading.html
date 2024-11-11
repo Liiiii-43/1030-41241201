@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lazy-loading 懶加載</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+        background-color: #C0D2EA !important;
+        }
+        .official-link {
+            font-size: 0.9rem;
+        }
+        .img-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .img-container img {
+            width: 100%; /* 設置圖片寬度為100% */
+            max-width: 250px; /* 設置最大寬度為250px */
+            height: auto;
+            margin: 5px; /* 設置圖片之間的間距 */
+        }
+        .custom-button {
+            background-color: #7d91a6; /* 按鈕顏色 */
+            border: none; /* 移除邊框 */
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+
+            <!-- 照片 -->
+            <a class="navbar-brand" href="#">
+                <img src="https://famishop.fami.life/famishopplus-pic/sites/t/c/530824/conversions/4tRU7ASSaw-normal.jpg" alt="Bootstrap" width="30" height="24">
+            </a>
+  
+            <!-- js套件介紹 -->
+            <a class="navbar-brand" href="index.html">js套件介紹</a>
+  
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+  
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="aos.html">AOS動畫效果</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="text-to-speech.html">文字轉語音</a></li>
+                    <li class="nav-item"><a class="nav-link" href="lottie.html">Lottie 動畫</a></li>
+                    <li class="nav-item"><a class="nav-link" href="chart.html">Chart.js 圖表</a></li>
+                    <li class="nav-item"><a class="nav-link" href="lazyloading.html">Lazy-loading 懶加載</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aframe.html">A-Frame</a></li>
+                    <li class="nav-item"><a class="nav-link" href="anime.html">Anime.js</a></li>
+                    <li class="nav-item"><a class="nav-link" href="konva.html">Konva.js</a></li>
+                    <li class="nav-item"><a class="nav-link" href="swiper.html">Swiper.js滑動圖片</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gridster.html">Gridster.js</a></li>
+                </ul>
+            </div>     
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        
+        <!-- Lazy-loading 套件名稱和官方網站區塊 -->
+        <div class="section">
+            <h1>Lazy-loading 懶加載</h1>
+            <p class="official-link"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank">Intersection Observer API官網</a></p>
+        </div>
+
+        <!-- 簡單範例程式碼區塊 -->
+        <div class="section">
+            <h2>簡單範例程式碼</h2>
+            <pre><code>const img = document.querySelector('.lazy');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.src = entry.target.dataset.src;
+            observer.unobserve(entry.target); // 停止觀察該圖片
+        }
+    });
+});
+observer.observe(img);</code></pre>
+        </div>
+
+        <!-- 簡單範例展示效果 -->
+        <div class="section">
+            <h2>簡單範例展示效果</h2>
+            <img class="lazy" data-src="https://via.placeholder.com/300" alt="懶加載圖片" width="300" height="250">
+        </div>
+
+        <!-- 完整範例程式碼區塊 -->
+        <div class="section">
+            <h2>完整範例程式碼</h2>
+            <pre><code>function generateImages(imageCount) {
+    const container = document.getElementById('image-container');
+    for (let i = 1; i <= imageCount; i++) {
+        const col = document.createElement('div');
+        col.className = 'col-4 mb-3';
+
+        const img = document.createElement('img');
+        img.dataset.src = \`http://fakeimg.pl/250x200/?text=\${i}\`; // 更改圖片大小
+        img.className = 'lazy img-fluid';
+        img.alt = \`圖片 \${i}\`;
+
+        col.appendChild(img);
+        container.appendChild(col);
+    }
+}
+
+function initLazyLoading() {
+    const images = document.querySelectorAll('.lazy');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                observer.unobserve(img); // 停止觀察該圖片
+            }
+        });
+    });
+    images.forEach(image => observer.observe(image));
+}
+
+// 生成 99 張圖片並初始化懶加載
+generateImages(99);
+initLazyLoading();</code></pre>
+        </div>
+
+        <!-- 完整範例展示效果 -->
+        <div class="section">
+            <h2>完整範例展示效果</h2>
+            <div id="image-container" class="img-container"></div>
+        </div>
+
+        <div class="text-center">
+            <a href="index.html" class="btn custom-button mt-3">返回首頁</a>
+        </div>
+    </div>
+
+    <script>
+        // 使用 JavaScript 動態生成圖片
+        function generateImages(imageCount) {
+            const container = document.getElementById('image-container');
+            for (let i = 1; i <= imageCount; i++) {
+                const col = document.createElement('div');
+                col.className = 'col-4 mb-3';
+
+                const img = document.createElement('img');
+                img.dataset.src = `http://fakeimg.pl/250x200/?text=${i}`; // 更改圖片大小
+                img.className = 'lazy img-fluid';
+                img.alt = `圖片 ${i}`;
+
+                col.appendChild(img);
+                container.appendChild(col);
+            }
+        }
+
+        // 初始化懶加載
+        function initLazyLoading() {
+            const images = document.querySelectorAll('.lazy');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        observer.unobserve(img); // 停止觀察該圖片
+                    }
+                });
+            });
+            images.forEach(image => observer.observe(image));
+        }
+
+        // 生成 99 張圖片並初始化懶加載
+        generateImages(99);
+        initLazyLoading();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
